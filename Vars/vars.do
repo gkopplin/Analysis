@@ -17,11 +17,7 @@ do "Vars/q4.do"
 do "Vars/q5.do"
 do "Vars/q6.do"
 do "Vars/q7.do"
-<<<<<<< HEAD
 // Q8 doesn't need any recodes
-=======
-// Q8 doesn't need any recodes do "Vars/q8.do"
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
 
 /* Insurance-related questions-- Qs 9 - 14
 The survey Rs appeared to have dificulty following the skip patterns in the survey,
@@ -58,7 +54,6 @@ do "Vars/q11.do"
 do "Vars/q12.do"
 do "Vars/q12a.do"
 do "Vars/q12b.do"
-do "Vars/q13.do"
-do "Vars/q14.do"
+do "Vars/q13q14.do"
 
 

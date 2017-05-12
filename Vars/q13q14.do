@@ -1,3 +1,14 @@
+/* Q13: For how many of the last 12mos did you have health insurance? */
+
+// Get rid of inconsistencies
+gen q13rinc = q13
+replace q13rinc = .a if anyinconsistency == 1
+label define q13rinc 1 "Less than 1 month" 2 "1 to 3 months" 3 "4 to 6 months" ///
+				  4 "7 to 12 months" 5 "I did not have health insurance" .a "N/A"
+label values q13rinc q13rinc
+label variable q13rinc "Q13: For how many of the last 12 months did you have health insurance? inconsistencies dropped"
+
+
 /* Q14: If you lost your insurance at some point in the last 12 months, why did this occur?"
    Q was intended to be a forced choice, however some treated as a check all that apply. */
    
@@ -20,27 +31,7 @@ replace q14rinc = 9 if q14ot ==1 & (q14a ==1 | q14b == 1 | q14c == 1 | q14d == 1
 replace q14rinc = .b if q14missing == 1
 replace q14rinc = .a if anyinconsistency == 1
 
-<<<<<<< HEAD
-=======
-// This only excludes Rs who had inconsistencies btwn 13 and 14
-gen q14rinc2 = .
-replace q14rinc2 = q14
-replace q14rinc2 = 9 if q14ot ==1 & (q14a ==1 | q14b == 1 | q14c == 1 | q14d == 1 | q14e == 1 | q14f == 1 | q14g == 1 | q14h == 1)
-replace q14rinc2 = .b if q14missing == 1
-replace q14rinc2 = .a if inconsistent1314 == 1
-// 34 women selected more than one answer
 
-
-// Create dummy for whether or not R lost insurance in past 12 months
-gen lostinsurance12mo = .
-replace lostinsurance12mo = 1 if q14 < 8
-replace lostinsurance12mo = 2 if q14 == 8
-replace lostinsurance12mo = .b if q14missing == 1
-label define yesnotruemissing 1 "Yes" 2 "No" .b "True Missing"
-label values lostinsurance12mo yesnotruemissing
-label variable lostinsurance12mo "Q14: Lost insurance in past 12 months?"
-// Among women who answered Q, ~30% lost insurance in the past year
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
 
 // Also coding so that these can be looked at as if they were "check all" questions
 
@@ -63,12 +54,8 @@ label variable q14hr "Q14: Didn't lose insurance in last 12 mo"
 // Moving ANY inconsistent responses into N/A
 forvalues i = 1/8 {
 	local l : word `i' of a b c d e f g h
-<<<<<<< HEAD
 		gen 	q14`l'rinc = 2
 		replace     q14`l'rinc = 1 if (q14 == `i' | q14`l' == 1)
-=======
-		gen     q14`l'rinc = 1 if (q14 == `i' | q14`l' == 1)
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
 		replace q14`l'rinc = .b if q14missing == 1
 		replace q14`l'rinc = .a if anyinconsistency == 1
 		label values q14`l'rinc yesnoNAmissing
@@ -82,7 +69,7 @@ label variable q14erinc "Q14: I couldn't provide the necessary paperwork (incons
 label variable q14frinc "Q14: My plan was cancelled (inconsistencies removed)"
 label variable q14grinc "Q14: Some other reason (inconsistencies removed)"
 label variable q14hrinc "Q14: Didn't lose insurance in last 12 mo (inconsistencies removed)"
-<<<<<<< HEAD
+
 
 // Create "lost insurance" variable
 gen lostinsurance12mo = .
@@ -117,5 +104,17 @@ replace insuredallyear = 1 if q14hrinc == 1 & haveinsurancepattern == 1
 // Pull out inconsistent responses from  denominator
 replace insuredallyear = .a if anyinconsistency == 1
 label values insuredallyear yesnoNAmissing
-=======
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
+
+
+// Rs who had changes in insurance status throughout year
+gen unstableinsurance = 1 
+replace unstableinsurance = 2 if insuredallyear == 1
+replace unstableinsurance = 2 if uninsuredallyear == 1
+replace unstableinsurance = .a if anyinconsistency == 1
+
+
+// Recode Q 13 so that it is only among those who had inconsistent insurance-- excluding those who were insured/uninsured all year
+gen q13final = .
+replace q13final = q13rinc if unstableinsurance == 1
+label values q13final q13rinc
+label variable q13rinc "Q13: For how many of the last 12 months did you have health insurance? Among women who had change in insurance status"
