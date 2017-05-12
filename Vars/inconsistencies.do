@@ -23,6 +23,12 @@ replace inconsistentnoinsurance = 1 if q9 == 1 & (q12a != . | q12b !=.)
 label values inconsistentnoinsurance yes
 label variable inconsistentnoinsurance "Rs who answered 'no insurance' Qs but said 'yes' in Q9"
 
+// Rs who checked that they had insurance in Q9, but then said they didn't have health insurance in past 12 mo on Q13
+gen inconsistentq9q13 = .
+replace inconsistentq9q13 = 1 if q9 == 1 & q13 == 5
+label values inconsistentq9q13 yes
+label variable inconsistentq9q13 "Rs who said they had insurance in Q9, but then said they didn't have insurance in Q13"
+
 // Rs who said they didn't have health insurance in past 12mo
 // in q13, but then gave a reason for why they lost insurance in past 12mo in q14
 gen inconsistent1314 = .
@@ -34,7 +40,7 @@ label variable inconsistent1314 "Rs who answered didn't lose insurance past 12mo
 // If any of the above inconsistencies are present, we'll leave them out of the insurance analysis.
 // Note: var "flag" is a variable created in coding that flagged surveys with odd and/or inconsistent answers in the insurance section
 gen anyinconsistency = .
-replace anyinconsistency = 1 if (inconsistenthaveinsurance == 1 | inconsistentnoinsurance == 1 | inconsistent1314 == 1 | inconsistent12a12b == 1 | flag == 1) 
+replace anyinconsistency = 1 if (inconsistenthaveinsurance == 1 | inconsistentnoinsurance == 1 | inconsistentq9q13 == 1 | inconsistent1314 == 1 | inconsistent12a12b == 1 | flag == 1) 
 label values anyinconsistency yes
 label variable anyinconsistency "Flag if there are any insurance-related inconsistencies"
 

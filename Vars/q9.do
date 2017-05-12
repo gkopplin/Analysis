@@ -29,10 +29,12 @@ list q9* anyinconsistency q10* q11* q12* if q9missing == 1 & anyinconsistency !=
 gen q9r = .
 replace q9r = q9 // fill in with data we currently have
 // Fill in Q9 as "have insurance" if any of the 10 or 11 Qs were answered, but not if any inconsistency
-replace q9r = 1 if (q9 ==. & (q10a == 1 | q10b == 1 | q10c == 1 | q10d == 1 | q10e == 1 | q10f == 1 | q10g == 1 | ///
-							  q10h == 1 | q11 != .) & anyinconsistency != 1)
+// Also, leave out those who declare in Q13 that they "didn't hav einsurance at any point in past 12 months" ! (Almost forgot those)
+replace q9r = 1 if (q9 ==. & (q10a == 1 | q10b == 1 | q10c == 1 | q10d == 1 | q10e == 1 | q10f == 1 | q10g == 1 | q10h == 1 | q11 != .) ///
+				 & (anyinconsistency != 1 & q13 != 5))
 // Fill in Q9 as "no insurance" if any Q12 Qs were answered, but not if any inconsistency
-replace q9r = 2 if (q9 ==. & (q12 != . | q12a != . | q12b != .) & anyinconsistency != 1)
+// Also, code up those who answered Q13 as "no insurance all year"!
+replace q9r = 2 if (q9 ==. & (q12 != . | q12a != . | q12b != . | q13 == 5) & (anyinconsistency != 1))
 label variable q9r "Q9: Do you currently have health insurance? (recode)
 label values q9r yesno
 // This resolves 16 of the cases in which there are no inconsistencies within the insurance
