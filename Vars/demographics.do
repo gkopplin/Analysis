@@ -65,7 +65,7 @@ label define agecat5 1 "<18" 2 "18-19" 3 "20-24" 4 "25-29" 5 "30+"
 label values agecat5 agecat5
 label variable agecat5 "Q15: How old are you? Standard 5 category"
 
-<<<<<<< HEAD
+
 // Alternative age cat used in Table 4
 gen agecat3 = .
 replace agecat3 = 1 if age < 20
@@ -74,7 +74,8 @@ replace agecat3 = 3 if age >= 30 & age < .
 label define agecat3 1 "<20" 2 "20-29" 3 ">30"
 label values agecat3 agecat3
 label variable agecat3 "Q15: How old are you? 3 category"
-=======
+
+/*
 // Alternative age category that looks specifically at 20-26 yos who may be impacted by ACA
 gen agecat3 = .
 replace agecat3 = 1 if age < 20
@@ -83,7 +84,7 @@ replace agecat3 = 3 if age >= 27 & age < .
 label define agecat3 1 "<20" 2 "20-26" 3 ">27"
 label values agecat3 agecat3
 label variable agecat3 "Q15: How old are you? 3 category centered on 20-26yos who may be impacted by ACA"
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
+*/
 
 
 ** Parity
@@ -144,7 +145,6 @@ label values povcat5 povcat5
 label variable povcat5 "Poverty status, 5 category breakdown"
 
 
-<<<<<<< HEAD
 // Reorder and label language variable
 gen language = .
 replace language = 1 if q18 == 1
@@ -154,5 +154,4 @@ replace language = 4 if q18 == 3
 label define language 1 "English" 2 "Spanish" 3 "Both English and Spanish" 4 "Other"
 label values language language
 label variable language "Q18: Language spoken at home"
-=======
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
+

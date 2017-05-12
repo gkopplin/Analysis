@@ -11,11 +11,8 @@ label variable q3missing "Q3: Respondent skipped the entire question"
    Added "r" to the end of recoded vars. */
 
 
-<<<<<<< HEAD
+
 foreach letter in a b c d e {
-=======
-foreach letter in a b c d {
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
 gen q3`letter'r = q3`letter'
 replace q3`letter'r = 2  if q3`letter' == .
 replace q3`letter'r = .a if q3missing == 1
@@ -45,21 +42,13 @@ replace q3f3r = .a  if q3missing == 1
 label values q3f3r yesnomissing
 
 // "Other" others
-<<<<<<< HEAD
 gen q3e1r = .
 replace q3e1r = 1 if (q3e == 1 & q3f == .)
 replace q3e1r = 1 if q3f == 9
 replace q3e1r = 2 if q3er == .
 replace q3e1r = .a if q3missing == 1
 label values q3e1r yesnomissing	
-=======
-gen q3er = .
-replace q3er = 1 if (q3e == 1 & q3f == .)
-replace q3er = 1 if q3f == 9
-replace q3er = 2 if q3er == .
-replace q3er = .a if q3missing == 1
-label values q3er yesnomissing	
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
+
 
 // Make "using no method" dependent on declaration of other method use. 
 gen q3gr = 1 if (q3ar == 2 & q3br == 2 & q3cr == 2 & q3dr == 2 & q3er == 2 & q3f1r == 2 & q3f2r == 2 & q3f3r == 2)
@@ -76,7 +65,7 @@ label variable q3gr  "Q3: I am not currently using a method"
 label variable q3f1r "Q3: Currently using condoms"
 label variable q3f2r "Q3: Currently using sterilization"
 label variable q3f3r "Q3: Currently using withdrawl"
-<<<<<<< HEAD
+
 
 // Need to collapse some birth control categories
 gen usepill = q3ar
@@ -98,6 +87,4 @@ replace useothermethod = .a if q3missing == 1
 label values useothermethod yesnomissing
 
 gen usenone = q3gr
-=======
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
 	

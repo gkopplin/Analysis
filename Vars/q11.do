@@ -89,9 +89,8 @@ label variable q11drforce "Q11: My deductible or co-pay is too high (forced base
 label variable q11erforce "Q11: Not using insurance for other reason (forced based on q9r)"
 label variable q11frforce "Q11: I expect to use my health insurance (forced based on q9r)"
  
-	// Forced skip pattern recodes that also move surveys with any inconsistencies
+// Forced skip pattern recodes that also move surveys with any inconsistencies
 // into the "n/a" category	
-<<<<<<< HEAD
 // Loop through answer vaules 1/6 as well as answer options a-f
 forvalues i = 1/6 {
 	local l : word `i' of a b c d e f
@@ -104,13 +103,6 @@ forvalues i = 1/6 {
 		// Replace with .a (NA) if R should have skipped this question
 		replace q11`l'rforceinc = .a if haveinsurancepattern != 1
 		// Replace with .a (NA) if R was pulled from sample because of "dirty" insurance responses
-=======
-forvalues i = 1/6 {
-	local l : word `i' of a b c d e f
-		gen q11`l'rforceinc = 1 if (q11 == `i' | q11`l' == 1)
-		replace q11`l'rforceinc = .b if q11missingforce == 1
-		replace q11`l'rforceinc = .a if haveinsurancepattern != 1
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
 		replace q11`l'rforceinc = .a if anyinconsistency == 1
 		label values q11`l'rforceinc yesnoNAmissing
 	}
@@ -121,7 +113,6 @@ label variable q11crforceinc "Q11: Can't use insurance because someone might fin
 label variable q11drforceinc "Q11: My deductible or co-pay is too high (forced based on q9r inconsistencies removed)"
 label variable q11erforceinc "Q11: Not using insurance for other reason (forced based on q9r inconsistencies removed)"
 label variable q11frforceinc "Q11: I expect to use my health insurance (forced based on q9r inconsistencies removed)"
-<<<<<<< HEAD
 
 // Have to create vars where the denominator == # who will NOT be using insurance
 // For options a-e
@@ -153,5 +144,3 @@ label variable q11bfinal "Q11: My insurance cant' be used here (forced, inc remo
 label variable q11cfinal "Q11: Can't use insurance because someone might find out (forced, inc removed, among those not using ins)"
 label variable q11dfinal "Q11: My deductible or co-pay is too high (forced, inc removed, among those not using ins)"
 label variable q11efinal "Q11: Not using insurance for other reason (forced, inc removed, among those not using ins)"
-=======
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9

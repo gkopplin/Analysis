@@ -58,7 +58,6 @@ label variable q4g1r  "Q4: Interested in condoms"
 label variable q4g2r  "Q4: Interested in sterilization"
 
 
-<<<<<<< HEAD
 // Need to collapse some birth control categories
 gen wantpill = q4ar
 label values wantpill yesnomissing
@@ -81,5 +80,3 @@ replace wantothermethod = .a if q4missing == 1
 label values wantothermethod yesnomissing
 
 gen wantnone = q4hr
-=======
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9

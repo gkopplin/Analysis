@@ -42,10 +42,8 @@ tab anyinconsistency
 // n= 415 
 // 415 surveys that contain any inconsistency in insurance answers,
 // will be dropped from analysis of insurance Qs
-<<<<<<< HEAD
 
 gen inconsistencytest = anyinconsistency
 replace inconsistencytest = 2 if anyinconsistency == .
 label values inconsistencytest yesno
-=======
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
+

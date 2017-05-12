@@ -28,7 +28,6 @@ label variable q3q4agree "Women who indicate they are interested in and using th
 gen notseekingchange = .
 replace notseekingchange = .a if q5missing == 1
 replace notseekingchange = 1 if (q3q4agree == 1 | q5i ==1)
-<<<<<<< HEAD
 replace notseekingchange = 2 if notseekingchange ==.
 label values notseekingchange yesnomissing
 label variable notseekingchange "Women not seeking to change method based on Qs 3 & 4 or directly stated in Q5"
@@ -39,12 +38,9 @@ replace seekingchange = 1 if notseekingchange != 1
 replace seekingchange = 2 if notseekingchange == 1
 replace seekingchange = .a if q5missing == 1
 label values seekingchange yesnomissing
-
-=======
 label values notseekingchange yesnomissing
 label variable notseekingchange "Women not seeking to change method based on Qs 3 & 4 or directly stated in Q5"
 
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
 ** Basic recode of vars
 	
 /* Recoding each of the response choices to distinguish between true missings
@@ -78,10 +74,7 @@ foreach letter in a b c d e f g {
 	tab q5`letter'rforce, missing
 }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
 ** Label all variables descriptively 
 
 label variable q5ar 			"Q5: Switching because I've learned new things about options"

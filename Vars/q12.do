@@ -29,7 +29,7 @@ label variable q12r "Q12: If you don't have health insurance, have you tried to 
 
 // There is one survey that has Q12 listed as "other"
 // need to investigate. Clinic 6092 ID 3691
-<<<<<<< HEAD
+
 // Checked on this survey and it is ambiguous-- says "just lost" on paper
 // Hard coding to .b, missing
 
@@ -45,6 +45,3 @@ replace q12rfinal = .a if noinsurancepattern != 1
 replace q12rfinal = .a if anyinconsistency == 1
 label values q12rfinal yesnoNAmissing
 label variable q12rfinal "Q12: If you don't have health insurance, have you tried to get it in last 12 mo? (Coded up)"
-=======
-
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9

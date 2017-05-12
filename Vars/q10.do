@@ -79,7 +79,6 @@ label variable q10drforceinc "Q10: Insurance through TRICARE/military (forced ba
 label variable q10erforceinc "Q10: Insurance through IHS (forced based on Q9r, inconsistencies dropped)"
 label variable q10frforceinc "Q10: Insurance through Medicare (forced based on Q9r, inconsistencies dropped)"
 label variable q10grforceinc "Q10: Other Insurance (forced based on Q9r, inconsistencies dropped)"
-<<<<<<< HEAD
 
 ** Collapse insurance categories
 
@@ -106,5 +105,4 @@ replace insurancecat3 = .c if anyinconsistency == 1 // Removed from analysis
 label define insurancecat3 1 "Medicaid" 2 "Private" 3 "Other" .a "N/A" .b "True missing"  .c "Inconsistency, dropped from analysis"
 label values insurancecat3 insurancecat3
 label variable insurancecat3 "Insurance status, collapsed"
-=======
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
+

@@ -7,10 +7,6 @@ rename q17b black
 rename q17c hispanic
 rename q17d asian
 rename q17e otherrace
-<<<<<<< HEAD
-=======
-rename q18  language
->>>>>>> a41b51e7fea30f4f3d21d842cd1aaf3894566fd9
 rename q19  nativity
 rename q19a yearsinUS
 rename q20  parity
