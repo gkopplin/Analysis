@@ -87,8 +87,9 @@ foreach  letter in a b c d e f g {
 }
 ** Insurance status all year
 
-// Rs who had no insurance all year-- total Rs who were uninsured all year as % of those with "clean" insurance Q responses
-gen uninsuredallyear = 2
+// Rs who had no insurance all year-- total Rs who were uninsured all year as % of those who are currently uninsured
+gen uninsuredallyear = .
+replace uninsuredallyear = 2 if q9r == 2
 // If R said "I didn't have ins in past 12 months" in q13 AND said they currently don't have health insurance
 replace uninsuredallyear = 1 if q13r ==5 & noinsurancepattern == 1
 // If R said in Q14 that they didn't lose their insurance in past year AND they currently don't have health insurance
@@ -97,8 +98,9 @@ replace uninsuredallyear = 1 if q14hrinc == 1 & noinsurancepattern == 1
 replace uninsuredallyear = .a if anyinconsistency == 1
 label values uninsuredallyear yesnoNAmissing
 
-// Rs who were insured all year-- total Rs who were insured all year as % of those with with "clean" insurance Q responses
-gen insuredallyear = 2
+// Rs who were insured all year-- total Rs who were insured all year as % of those who are currently insured
+gen insuredallyear = .
+replace insuredallyear = 2 if q9r == 1
 // If R said "Didn't lose insured in past year" and are currently insured
 replace insuredallyear = 1 if q14hrinc == 1 & haveinsurancepattern == 1
 // Pull out inconsistent responses from  denominator
