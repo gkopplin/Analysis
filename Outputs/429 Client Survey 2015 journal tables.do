@@ -9,9 +9,9 @@ log using "K:/Projects/429 OPA-ACA/Component 3 - Client survey\Analysis\Logs\429
 ** Date created:  5/5/2017
 ** Written by:    KB
 
-*******************************
+***************************************************
 * Get weighted and recoded 2016 client survey data.
-*******************************
+****************************************************
 
 use "K:\Projects\429 OPA-ACA\Component 3 - Client survey\Data\429 Client Survey 2015 w weights from 2015 census.dta", clear
 
@@ -22,7 +22,10 @@ use "K:\Projects\429 OPA-ACA\Component 3 - Client survey\Data\429 Client Survey 
 ** Tables will be exported to a "docking station" and we will then link the excel spreadsheets into the previously developed table shells
 gutt using "K:\Projects\429 OPA-ACA\Component 3 - Client survey\Analysis\Prints\429 Tables docking station.xlsx", replace
 
-** Table 1
+**********
+* Table 1
+**********
+
 // For now, don't know how to use FPAR data, so just doing an export
 gtab agecat5, 	 			svy percent body(b.0) subtitle("Age") continue
 gtab paritycat2, 			svy percent body(b.0) subtitle("Parity") continue
@@ -35,7 +38,10 @@ gtab language, 				svy percent body(b.0) subtitle("Language") continue
 gtab nativity, 				svy percent body(b.0) subtitle("Nativity") continue
 gtab factype, 				svy percent body(b.0) subtitle("Facility type") sheet("Table 1 Characteristics") 
 
-** Table 2
+**********
+* Table 2
+**********
+
 // Export total %s
 gtab usepill, 	 			svy percent body(b.0) subtitle("Using pill") continue
 gtab usepatchringshot, 			svy percent body(b.0) subtitle("Using pill patch ring") continue
@@ -55,21 +61,24 @@ gtab q5brforce, 				svy percent body(b.0) subtitle("Switching bc can now afford 
 gtab q5crforce, 				svy percent body(b.0) subtitle("Switching bc can't afford old method") continue
 gtab q5drforce, 				svy percent body(b.0) subtitle("Switching bc side effects") continue
 gtab q5erforce, 				svy percent body(b.0) subtitle("Switching bc unplanned pregnancy") continue
-gtab q5grforce, 				svy percent body(b.0) subtitle("Switching for other reason") continue 
-
-gtab firstvisit, 				svy percent body(b.0) subtitle("First visit at clinic?") sheet("Table 2 Method Use & Switching")  
+gtab q5grforce, 				svy percent body(b.0) subtitle("Switching for other reason") sheet("Table 2 Method Use & Switching")  
 
 // Describe and test for difference between types of insurance
-gumm i.firstvisit i.usepill i.usepatchringshot i.useIUDimp i.useothermethod i.useothermethod i.usenone i.wantpill i.wantpatchringshot i.wantIUDimp i.wantEC i.wantothermethod ///
-	i.notseekingchange i.q5arforce i.q5brforce i.q5crforce i.q5drforce i.q5erforce i.q5grforce, svy percent body(b.0) over(insurancecat3) below_last sheet("Table 2 Method Use & Switching")
+gumm i.usepill i.usepatchringshot i.useIUDimp i.useothermethod i.usenone i.wantpill i.wantpatchringshot i.wantIUDimp i.wantEC i.wantothermethod ///
+	 i.notseekingchange i.q5arforce i.q5brforce i.q5crforce i.q5drforce i.q5erforce i.q5grforce, ///
+	 svy percent body(b.0) over(insurancecat3) below_last sheet("Table 2 Method Use & Switching")
 
 // Describe and test for differences between insured/uninsured
-gumm i.firstvisit i.usepill i.usepatchringshot i.useIUDimp i.useothermethod i.useothermethod i.usenone i.wantpill i.wantpatchringshot i.wantIUDimp i.wantEC i.wantothermethod ///
-	i.notseekingchange i.q5arforce i.q5brforce i.q5crforce i.q5drforce i.q5erforce i.q5grforce, svy percent body(b.0)  over(q9r) below_last sheet("Table 2 Method Use & Switching")		
+gumm i.usepill i.usepatchringshot i.useIUDimp i.useothermethod i.usenone i.wantpill i.wantpatchringshot i.wantIUDimp i.wantEC i.wantothermethod ///
+	i.notseekingchange i.q5arforce i.q5brforce i.q5crforce i.q5drforce i.q5erforce i.q5grforce, ///
+	svy percent body(b.0)  over(q9r) below_last sheet("Table 2 Method Use & Switching")		
 	
-	
-** Table 3
+**********	
+* Table 3
+**********
+
 // Total %s
+gtab firstvisit, 	 					svy percent body(b.0) subtitle("First visit?") continue
 gtab visitreason1, 	 					svy percent body(b.0) subtitle("Primary reason visit") continue
 
 gtab servicesavailablegrp, 	 			svy percent body(b.0) subtitle("Summ grp: Services available") continue
@@ -103,21 +112,39 @@ gtab q7frforce, 	 					svy percent body(b.0) subtitle("Didn't want family to fin
 gtab q7grforce, 	 					svy percent body(b.0) subtitle("Other reason not to see FP provider") sheet("Table 3 Healthcare Behaviors")
 
 // Describe and test for differences between types of insurance
-gumm i.visitreason1 i.servicesavailablegrp i.q6ar i.q6er i.q6fr i.qualconveniencegrp i.q6dr i.q6gr i.q6hr i.q6ir i.familiaritygrp i.q6br i.q6cr i.affordabilitygrp i.q6jr i.q6kr ///
-	 i.q8 i.hadBCvisit i.noBCvisit i.q7arforce i.q7brforce i.q7crforce i.q7drforce i.q7erforce i.q7frforce i.q7grforce, svy percent body(b.0) over(insurancecat3) below_last sheet("Table 3 Healthcare Behaviors")
+gumm i.firstvisit i.visitreason1 						///
+     i.servicesavailablegrp i.q6ar i.q6er i.q6fr 		///
+	 i.qualconveniencegrp i.q6dr i.q6gr i.q6hr i.q6ir 	///
+	 i.familiaritygrp i.q6br i.q6cr 					///
+	 i.affordabilitygrp i.q6jr i.q6kr 					///
+	 i.q8 i.hadBCvisit i.noBCvisit i.q7arforce i.q7brforce i.q7crforce i.q7drforce i.q7erforce i.q7frforce i.q7grforce, ///
+	 svy percent body(b.0) over(insurancecat3) below_last sheet("Table 3 Healthcare Behaviors")
 
 // Describe and test for differences between insured/uninsured
-gumm i.visitreason1 i.servicesavailablegrp i.q6ar i.q6er i.q6fr i.qualconveniencegrp i.q6dr i.q6gr i.q6hr i.q6ir i.familiaritygrp i.q6br i.q6cr i.affordabilitygrp i.q6jr i.q6kr  ///
-	 i.q8 i.hadBCvisit i.noBCvisit i.q7arforce i.q7brforce i.q7crforce i.q7drforce i.q7erforce i.q7frforce i.q7grforce, svy percent body(b.0) over(q9r) below_last sheet("Table 3 Healthcare Behaviors")
+gumm i.firstvisit i.visitreason1 						///
+     i.servicesavailablegrp i.q6ar i.q6er i.q6fr 		///
+	 i.qualconveniencegrp i.q6dr i.q6gr i.q6hr i.q6ir 	///
+	 i.familiaritygrp i.q6br i.q6cr 					///
+	 i.affordabilitygrp i.q6jr i.q6kr 					///
+	 i.q8 i.hadBCvisit i.noBCvisit i.q7arforce i.q7brforce i.q7crforce i.q7drforce i.q7erforce i.q7frforce i.q7grforce, ///
+	 svy percent body(b.0) over(q9r) below_last sheet("Table 3 Healthcare Behaviors")
 	 
 // Describe and test for differences between clinic type
-gumm i.visitreason1 i.servicesavailablegrp i.q6ar i.q6er i.q6fr i.qualconveniencegrp i.q6dr i.q6gr i.q6hr i.q6ir i.familiaritygrp i.q6br i.q6cr i.affordabilitygrp i.q6jr i.q6kr ///
-	 i.q8 i.hadBCvisit i.noBCvisit i.q7arforce i.q7brforce i.q7crforce i.q7drforce i.q7erforce i.q7frforce i.q7grforce, svy percent body(b.0) over(factype) below_last sheet("Table 3 Healthcare Behaviors")
+gumm i.firstvisit i.visitreason1 						///
+     i.servicesavailablegrp i.q6ar i.q6er i.q6fr 		///
+	 i.qualconveniencegrp i.q6dr i.q6gr i.q6hr i.q6ir 	///
+	 i.familiaritygrp i.q6br i.q6cr 					///
+	 i.affordabilitygrp i.q6jr i.q6kr 					///
+	 i.q8 i.hadBCvisit i.noBCvisit i.q7arforce i.q7brforce i.q7crforce i.q7drforce i.q7erforce i.q7frforce i.q7grforce, ///
+	 svy percent body(b.0) over(factype) below_last sheet("Table 3 Healthcare Behaviors")
 
-
-** Table 4
+**********
+* Table 4
+**********
 
 // Total %s
+gtab q9r,   								svy percent body(b.0) subtitle("Are you currently insured?") continue
+gtab insuredallyear, 	 					svy percent body(b.0) subtitle("Insured all year") continue
 gtab q11frforceinc, 	 					svy percent body(b.0) subtitle("Plan to use insurance today? Y/N") continue
 gtab q11afinal, 	 						svy percent body(b.0) subtitle("Service not covered by insurance") continue
 gtab q11bfinal, 	 						svy percent body(b.0) subtitle("Can't use insurance here") continue
@@ -125,6 +152,7 @@ gtab q11cfinal, 	 						svy percent body(b.0) subtitle("Someone might find out i
 gtab q11dfinal, 	 						svy percent body(b.0) subtitle("Deductible/co-pay too high on insurance") continue
 gtab q11efinal, 	 						svy percent body(b.0) subtitle("Other reason not to use insurance") continue
 
+gtab uninsuredallyear, 	 					svy percent body(b.0) subtitle("Uninsured all year") continue
 gtab q12rfinal, 	 						svy percent body(b.0) subtitle("Did you try to get insurance in past year?") continue
 gtab q12a1rforceinc, 	 					svy percent body(b.0) subtitle("Didn't get insurance: Couldn't afford") continue
 gtab q12a2rforceinc, 	 					svy percent body(b.0) subtitle("Didn't get insurance: Too complicated") continue
@@ -144,38 +172,39 @@ gtab q12b7rforceinc, 	 					svy percent body(b.0) subtitle("Didn't try to get in
 gtab q12b8rforceinc, 	 					svy percent body(b.0) subtitle("Didn't try to get insurance: Other eason") sheet("Table 4 Insurance")
 
 // Describe and test for differences by age
-gumm i.q11frforceinc i.q11afinal i.q11bfinal i.q11cfinal i.q11dfinal i.q11efinal i.q12rfinal i.q12a1rforceinc i.q12a2rforceinc i.q12a3rforceinc i.q12a4rforceinc ///
-	 i.q12a5rforceinc i.q12a6rforceinc i.q12b1rforceinc i.q12b2rforceinc i.q12b3rforceinc i.q12b4rforceinc i.q12b5rforceinc i.q12b6rforceinc i.q12b7rforceinc ///
-	 i.q12b8rforceinc, svy percent body(b.0) over(agecat3) below_last sheet("Table 4 Insurance")
+gumm i.q9r i.insuredallyear i.q11frforceinc i.q11afinal i.q11bfinal i.q11cfinal i.q11dfinal i.q11efinal 										///
+	 i.uninsuredallyear i.q12rfinal i.q12a1rforceinc i.q12a2rforceinc i.q12a3rforceinc i.q12a4rforceinc i.q12a5rforceinc i.q12a6rforceinc 		///
+	 i.q12b1rforceinc i.q12b2rforceinc i.q12b3rforceinc i.q12b4rforceinc i.q12b5rforceinc i.q12b6rforceinc i.q12b7rforceinc i.q12b8rforceinc, 	///
+	 svy percent body(b.0) over(agecat3) below_last sheet("Table 4 Insurance")
 	 
 // Describe and test for differences by poverty status
-gumm i.q11frforceinc i.q11afinal i.q11bfinal i.q11cfinal i.q11dfinal i.q11efinal i.q12rfinal i.q12a1rforceinc i.q12a2rforceinc i.q12a3rforceinc i.q12a4rforceinc ///
-	 i.q12a5rforceinc i.q12a6rforceinc i.q12b1rforceinc i.q12b2rforceinc i.q12b3rforceinc i.q12b4rforceinc i.q12b5rforceinc i.q12b6rforceinc i.q12b7rforceinc ///
-	 i.q12b8rforceinc, svy percent body(b.0) over(povcat3) below_last sheet("Table 4 Insurance")
+gumm i.q9r i.insuredallyear i.q11frforceinc i.q11afinal i.q11bfinal i.q11cfinal i.q11dfinal i.q11efinal 										///
+	 i.uninsuredallyear i.q12rfinal i.q12a1rforceinc i.q12a2rforceinc i.q12a3rforceinc i.q12a4rforceinc i.q12a5rforceinc i.q12a6rforceinc 		///
+	 i.q12b1rforceinc i.q12b2rforceinc i.q12b3rforceinc i.q12b4rforceinc i.q12b5rforceinc i.q12b6rforceinc i.q12b7rforceinc i.q12b8rforceinc, 	///
+	 svy percent body(b.0) over(povcat3) below_last sheet("Table 4 Insurance")
 	 
 // Describe and test for differences by race/ethnicity
-gumm i.q11frforceinc i.q11afinal i.q11bfinal i.q11cfinal i.q11dfinal i.q11efinal i.q12rfinal i.q12a1rforceinc i.q12a2rforceinc i.q12a3rforceinc i.q12a4rforceinc ///
-	 i.q12a5rforceinc i.q12a6rforceinc i.q12b1rforceinc i.q12b2rforceinc i.q12b3rforceinc i.q12b4rforceinc i.q12b5rforceinc i.q12b6rforceinc i.q12b7rforceinc ///
-	 i.q12b8rforceinc, svy percent body(b.0) over(race1) below_last sheet("Table 4 Insurance")
+gumm i.q9r i.insuredallyear i.q11frforceinc i.q11afinal i.q11bfinal i.q11cfinal i.q11dfinal i.q11efinal 										///
+	 i.uninsuredallyear i.q12rfinal i.q12a1rforceinc i.q12a2rforceinc i.q12a3rforceinc i.q12a4rforceinc i.q12a5rforceinc i.q12a6rforceinc 		///
+	 i.q12b1rforceinc i.q12b2rforceinc i.q12b3rforceinc i.q12b4rforceinc i.q12b5rforceinc i.q12b6rforceinc i.q12b7rforceinc i.q12b8rforceinc, 	///
+	 svy percent body(b.0) over(race1) below_last sheet("Table 4 Insurance")
 	 
-// Describe and test for differences by insurance type
-gumm i.q11frforceinc i.q11afinal i.q11bfinal i.q11cfinal i.q11dfinal i.q11efinal, svy percent body(b.0) over(insurancecat3) below_last sheet("Table 4 Insurance")
+// Describe and test for differences by insurance type (only among those w insurance)
+gumm i.q9r i.insuredallyear i.q11frforceinc i.q11afinal i.q11bfinal i.q11cfinal i.q11dfinal i.q11efinal, 										///
+	 svy percent body(b.0) over(insurancecat3) below_last sheet("Table 4 Insurance")
+
+// Describe and test for differences by insurance status (only among those w insurance)
+gumm i.q9r i.insuredallyear i.q11frforceinc i.q11afinal i.q11bfinal i.q11cfinal i.q11dfinal i.q11efinal, 										///
+	 svy percent body(b.0) over(q9r) below_last sheet("Table 4 Insurance")
 
 // Describe and test for differences by nativity
-gumm i.q11frforceinc i.q11afinal i.q11bfinal i.q11cfinal i.q11dfinal i.q11efinal i.q12rfinal i.q12a1rforceinc i.q12a2rforceinc i.q12a3rforceinc i.q12a4rforceinc ///
-	 i.q12a5rforceinc i.q12a6rforceinc i.q12b1rforceinc i.q12b2rforceinc i.q12b3rforceinc i.q12b4rforceinc i.q12b5rforceinc i.q12b6rforceinc i.q12b7rforceinc ///
-	 i.q12b8rforceinc, svy percent body(b.0) over(nativity) below_last sheet("Table 4 Insurance")
+gumm i.q9r i.insuredallyear i.q11frforceinc i.q11afinal i.q11bfinal i.q11cfinal i.q11dfinal i.q11efinal 										///
+	 i.uninsuredallyear i.q12rfinal i.q12a1rforceinc i.q12a2rforceinc i.q12a3rforceinc i.q12a4rforceinc i.q12a5rforceinc i.q12a6rforceinc 		///
+	 i.q12b1rforceinc i.q12b2rforceinc i.q12b3rforceinc i.q12b4rforceinc i.q12b5rforceinc i.q12b6rforceinc i.q12b7rforceinc i.q12b8rforceinc, 	///
+	 svy percent body(b.0) over(nativity) below_last sheet("Table 4 Insurance")
 	 
-// Accidentally left off Y/N of whether or not someone had insurance to main tables. Because the above output is already linked to the table shells, exporting below.
-gtab q9r,   svy percent body(b.0) subtitle("Are you currently insured?") continue
-gumm i.q9r, svy percent body(b.0) over(agecat3) below_last sheet("Table 4 Insurance")
-gumm i.q9r, svy percent body(b.0) over(povcat3) below_last sheet("Table 4 Insurance")
-gumm i.q9r, svy percent body(b.0) over(insurancecat3)below_last sheet("Table 4 Insurance")
-gumm i.q9r, svy percent body(b.0) over(race1) below_last sheet("Table 4 Insurance")
-gumm i.q9r, svy percent body(b.0) over(nativity) below_last sheet("Table 4 Insurance")
+// At the bottom of Table 4, putting information about insurance status changes.
 
-gtab insuredallyear, 	 						svy percent body(b.0) subtitle("Insured all year") continue
-gtab uninsuredallyear, 	 						svy percent body(b.0) subtitle("Uninsured all year") continue
 gtab unstableinsurance, 						svy percent body(b.0) subtitle("Unstable insurance status") continue
 gtab q13final, 	 								svy percent body(b.0) subtitle("No. of Months insured in past year") continue
 gtab lostinsurance12mo, 						svy percent body(b.0) subtitle("Lost insurance in past year") continue
@@ -187,24 +216,25 @@ gtab q14efinal, 	 							svy percent body(b.0) subtitle("Lost insurance: Couldn'
 gtab q14ffinal, 	 							svy percent body(b.0) subtitle("Lost insurance: Plan was cancelled") continue
 gtab q14gfinal, 	 							svy percent body(b.0) subtitle("Lost insurance: Other reason") continue
 
-gumm i.insuredallyear i.uninsuredallyear i.unstableinsurance i.q13final i.lostinsurance12mo i.q14afinal i.q14bfinal i.q14cfinal i.q14dfinal i.q14efinal i.q14ffinal i.q14gfinal, ///
+gumm i.unstableinsurance i.q13final i.lostinsurance12mo i.q14afinal i.q14bfinal i.q14cfinal i.q14dfinal i.q14efinal i.q14ffinal i.q14gfinal, ///
 	 svy percent body(b.0) over(agecat3) below_last sheet("Table 4 Insurance")
-gumm i.insuredallyear i.uninsuredallyear i.unstableinsurance i.q13final  i.lostinsurance12mo i.q14afinal i.q14bfinal i.q14cfinal i.q14dfinal i.q14efinal i.q14ffinal i.q14gfinal, ///
+gumm i.unstableinsurance i.q13final  i.lostinsurance12mo i.q14afinal i.q14bfinal i.q14cfinal i.q14dfinal i.q14efinal i.q14ffinal i.q14gfinal, ///
 	 svy percent body(b.0) over(povcat3) below_last sheet("Table 4 Insurance")
-gumm i.insuredallyear i.uninsuredallyear i.unstableinsurance i.q13final i.lostinsurance12mo i.q14afinal i.q14bfinal i.q14cfinal i.q14dfinal i.q14efinal i.q14ffinal i.q14gfinal, ///
+gumm i.unstableinsurance i.q13final i.lostinsurance12mo i.q14afinal i.q14bfinal i.q14cfinal i.q14dfinal i.q14efinal i.q14ffinal i.q14gfinal, ///
 	 svy percent body(b.0) over(insurancecat3) below_last sheet("Table 4 Insurance")
-gumm i.insuredallyear i.uninsuredallyear i.unstableinsurance i.q13final i.lostinsurance12mo i.q14afinal i.q14bfinal i.q14cfinal i.q14dfinal i.q14efinal i.q14ffinal i.q14gfinal, ///
+gumm i.unstableinsurance i.q13final i.lostinsurance12mo i.q14afinal i.q14bfinal i.q14cfinal i.q14dfinal i.q14efinal i.q14ffinal i.q14gfinal, ///
 	 svy percent body(b.0) over(q9r) below_last sheet("Table 4 Insurance")
-gumm i.insuredallyear i.uninsuredallyear i.unstableinsurance i.q13final i.lostinsurance12mo i.q14afinal i.q14bfinal i.q14cfinal i.q14dfinal i.q14efinal i.q14ffinal i.q14gfinal, ///
+gumm i.unstableinsurance i.q13final i.lostinsurance12mo i.q14afinal i.q14bfinal i.q14cfinal i.q14dfinal i.q14efinal i.q14ffinal i.q14gfinal, ///
 	 svy percent body(b.0) over(race1) below_last sheet("Table 4 Insurance")
-gumm i.insuredallyear i.uninsuredallyear i.unstableinsurance i.q13final  i.lostinsurance12mo i.q14afinal i.q14bfinal i.q14cfinal i.q14dfinal i.q14efinal i.q14ffinal i.q14gfinal, ///
+gumm i.unstableinsurance i.q13final  i.lostinsurance12mo i.q14afinal i.q14bfinal i.q14cfinal i.q14dfinal i.q14efinal i.q14ffinal i.q14gfinal, ///
 	 svy percent body(b.0) over(nativity) below_last sheet("Table 4 Insurance")
 
+************************************
+* Additional and/or appendix tables
+************************************
 
-** Additional and/or appendix tables
 
 // Additional tables (may become appendix table(s) or just for the sake of looking tables)
-
 gtab inconsistencytest,   svy percent body(b.0) subtitle("Any inconsistencies on survey?") sheet("Appendix tables")
 gumm i.inconsistencytest, svy percent body(b.0) over(language) below_last sheet("Appendix tables")
 gumm i.inconsistencytest, svy percent body(b.0) over(nativity) below_last sheet("Appendix tables")
