@@ -11,7 +11,7 @@ label variable q11missing "Q11: Respondent skipped the entire question"
 // Pull out those who should have skipped question, indicating those who skipped who should have answered (i.e. true missings)
 // Recoding so that those who skipped all Qs on pg 3 are in the N/A category
 gen q11missingforce = .
-replace q11missingforce = 1 if (q11 == . & q11a != 1 & q11b != 1 & q11c != 1 & q11d != 1 & q11e != 1 & q11f != 1)
+replace q11missingforce = 1  if (q11 == . & q11a != 1 & q11b != 1 & q11c != 1 & q11d != 1 & q11e != 1 & q11f != 1)
 replace q11missingforce = .a if (haveinsurancepattern != 1)
 label values q11missingforce yesNA
 label variable q11missingforce "Q11: Respondent skipped the entire question but should have answered (forced skip pattern)"

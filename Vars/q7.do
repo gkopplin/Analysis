@@ -7,6 +7,15 @@ replace q7missing = 1 if (q7a != 1 & q7b != 1 & q7c != 1 & q7d != 1 & q7e != 1 &
 label values q7missing yes
 label variable q7missing "Q7: Respondent skipped the entire question"
 
+// NOTE: There is one R who is coded as having an "other" in q7h,
+// but not in q7g. clinicid == 6092 uniqueid == 3698
+// This survey needs to be checked and coded appropriately, as surveys
+// hypothetically should NOT have a code in q7h without a code in q7g
+// RESOLVED: This must have been a keypunching error-- survey ONLY has q7i checked,
+// there is no other. Hard coding to correct below prior to other recodes.
+replace q7h = . if uniqueid == 3698
+
+
 /* Recoding each of the response choices to distinguish between true missings
    for the entire question vs. respondents who did not choose that response.
    Added "r" to the end of recoded vars. */
@@ -17,16 +26,9 @@ foreach letter in a b c d e f g i{
 	label values q7`letter'r yesnomissing
 }
 
-// NOTE: There is one R who is coded as having an "other" in q7h,
-// but not in q7g. clinicid == 6092 uniqueid == 3698
-// This survey needs to be checked and coded appropriately, as surveys
-// hypothetically should NOT have a code in q7h without a code in q7g
 
-// This is the recode for q7i, which will be used to force Rs in code below
-gen hadBCvisit = .
-replace hadBCvisit = 1 if q7i == 1
-replace hadBCvisit = 2 if q7i == . 
-replace hadBCvisit = .a if q7missing == 1
+// Will be using q7ir to force responses below, renaming for ease of use
+rename q7ir hadBCvisit
 label values hadBCvisit yesnomissing
 label variable hadBCvisit "Q7: I DID make a visit for birth control services in the last year, other than today's visit"
 
@@ -39,8 +41,8 @@ label variable noBCvisit "Q7: Didn't make a BC visit at any healthcare facility 
 
 // Re-running q7 with forced answers based on q7i
 // If a R indicated that they did make a visit for BC services in the past year,
-// thier answer will be pulled from the following recodes.
-// "Among women who did not make a visit for BC services in the last year..."
+// thier answer will be pulled from the following recodes, making the responses
+// "Among women who did NOT make a visit for BC services in the last year..."
 
 label define q7force 1 "Yes" 2 "No" .a "Had BC visit in past year" .b "Missing for entire question"
 
@@ -52,6 +54,7 @@ foreach letter in a b c d e f g i{
 	label values q7`letter'rforce q7force
 }
 
+// Label variables descriptively
 label variable q7ar "Q7: I didn't have a reason to see a provider/doctor"
 label variable q7br "Q7: I had already had my annual GYN exam"
 label variable q7cr "Q7: I'm not comfortable seeing a provider/doctor for these services"

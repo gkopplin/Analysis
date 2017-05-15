@@ -2,7 +2,6 @@
 	R could choose more than one response */
 
 // Create var to indicate Rs who skipped question 2 altogether
-// Set variable = missing
 gen q2missing = .
 // If R did not select options a-f (not equal to 1) or g (exactly equal to missing), mark as missing for whole item
 replace q2missing = 1 if (q2a != 1 & q2b != 1 & q2c != 1 & q2d != 1 & q2e != 1 & q2f != 1 & q2g == .)
@@ -73,6 +72,7 @@ replace q2fr = 2 if q2fr == .
 replace q2fr = .a if q2missing == 1
 label values q2fr yesnomissing
 
+// Label all vars
 label variable q2ar  "Q2: Here for BC refill"
 label variable q2br  "Q2: Here due to method issue"
 label variable q2cr  "Q2: Here annual GYN exam"
@@ -86,13 +86,15 @@ label variable q2g4r "Q2: Here for other repro health problems"
 label variable q2g5r "Q2: Here for other preventative care"
 label variable q2g6r "Q2: Here for IUD follow-up appt"
 
-// Collapsed variable, forced to equal 100%
+** Collapse variable **
+
+// Forced total to equal 100%, i.e. don't let respondents pick more than one option.
 // Categories: 
 // Contraception / Annual GYN visit / Pregnancy test only / STI service only / Other service only
 // Coded with preference given to Contraception above all others
 
 // Create dummies for each of the main categories
-// Women here for cp if here for: BC refill, method issue, EC, LARC removal, IUD follow up
+// Women here for contraception if here for: BC refill, method issue, EC, LARC removal, IUD follow up
 gen hereforcp  = 1 if (q2ar == 1 | q2br == 1 | q2g1r == 1 | q2g2r == 1 | q2g6r == 1)
 // Women here for GYN exam is only one question
 gen hereforGYN = 1 if q2cr == 1
@@ -109,7 +111,9 @@ gen hereforother = 1 if ((q2fr == 1 | q2g3r == 1 | q2g4r == 1 | q2g5r == 1) & (q
 // Women here for other services at all
 gen hereforother1 = 1 if (q2fr == 1 | q2g3r == 1 | q2g4r == 1 | q2g5r == 1)
 
-// This is coded such that anyone here for more than one reason that is not CP or GYN exam gets lumped into other
+/* This recode of visit reason will not be used.
+
+// This is coded such that anyone here for more than one reason that is not CP or GYN exam gets lumped into "other"
 gen visitreason = .
 replace visitreason = 9 if (q2ar == 1| q2br == 1| q2cr == 1| q2dr == 1| q2er == 1| q2fr == 1| q2g1r == 1| q2g2r == 1| q2g3r == 1| q2g4r == 1| q2g5r == 1| q2g6r == 1)
 replace visitreason = 3 if hereforpregtest == 1
@@ -121,9 +125,11 @@ label define visitreason 1 "Contraception" 2 "Annual gynecologic exam" 3 "Pregna
 label values visitreason visitreason
 label variable visitreason "Q2: Primary purpose of today's visit"
 
-// This version of the var is coded hierarchically such that cp > gyn > STI > preg test > other 
+*/
+
+// This version of the visitreason is coded hierarchically such that cp > gyn > STI > preg test > other 
 gen visitreason1 = .
-replace visitreason1 = 9 if (q2ar == 1| q2br == 1| q2cr == 1| q2dr == 1| q2er == 1| q2fr == 1| q2g1r == 1| q2g2r == 1| q2g3r == 1| q2g4r == 1| q2g5r == 1| q2g6r == 1)
+replace visitreason1 = 9 if q2missing ! = 1
 replace visitreason1 = 5 if hereforother1 == 1
 replace visitreason1 = 3 if hereforpregtest1 == 1
 replace visitreason1 = 4 if hereforSTI1 == 1
@@ -131,4 +137,4 @@ replace visitreason1 = 2 if hereforGYN == 1
 replace visitreason1 = 1 if hereforcp == 1
 replace visitreason1 = 5 if visitreason1 == 9
 label values visitreason1 visitreason
-label variable visitreason1 "Q2ALT: Primary purpose of today's visit"
+label variable visitreason1 "Q2ALT: Primary purpose of today's visit, coded toward contraception"

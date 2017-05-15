@@ -17,6 +17,7 @@ foreach letter in a b c d e f g h i j k {
 	replace q6`letter'r = .a if q6missing == 1
 	label values q6`letter'r yesnomissing
 }   
+
 label variable q6ar "Q6: Came here because this is only place I can get services I need"
 label variable q6br "Q6: Came here because I've been here before"
 label variable q6cr "Q6: Came here because someone recommended I come here"
@@ -29,8 +30,9 @@ label variable q6ir "Q6: Came here because staff here can refer me for other hea
 label variable q6jr "Q6: Came here because I can get free or low-cost services"
 label variable q6kr "Q6: Came here because I can use my insurance here"
 
+
 ** Construct summary categories
-// This is a first pass of the summary vars, based on our conjecture of how they fit together
+// This is a first pass of the summary vars, based on our conjecture of how they fit together, may change when writing paper
 
 // "Services available" group-- includes only place that provides services, can get desired method, tenn or YA services
 gen servicesavailablegrp = 2

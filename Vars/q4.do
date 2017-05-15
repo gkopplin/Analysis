@@ -1,6 +1,7 @@
 /* Question 4 " What birth control methods are you interested in today?"
 	R could choose more than one response */
 
+// Create var to indicate Rs who skipped question altogether
 gen q4missing = .
 replace q4missing = 1 if (q4a != 1 & q4b != 1 & q4c != 1 & q4d != 1 & q4e != 1 & q4f != 1 & q4g != 1 & q4h != 1)
 label values q4missing yes
@@ -10,7 +11,7 @@ label variable q4missing "Q4: Respondent skipped the entire question"
    for the entire question vs. respondents who did not choose that response.
    Added "r" to the end of recoded vars. */
 
-
+// Recodes for a-e, the main responses
 foreach letter in a b c d e {
 gen q4`letter'r = q4`letter'
 replace q4`letter'r = 2  if q4`letter' == .
@@ -58,25 +59,32 @@ label variable q4g1r  "Q4: Interested in condoms"
 label variable q4g2r  "Q4: Interested in sterilization"
 
 
-// Need to collapse some birth control categories
+// Collapse categories
 gen wantpill = q4ar
 label values wantpill yesnomissing
+label variable wantpill "Q4: R is interested in pill today"
 
 gen wantpatchringshot = .
 replace wantpatchringshot = 1 if q4br == 1 | q4cr == 1
 replace wantpatchringshot = 2 if q4br == 2 & q4cr == 2
 replace wantpatchringshot = .a if q4missing == 1
 label values wantpatchringshot yesnomissing
+label variable wantpatchringshot "Q4: R is interested in patch/ring/shot"
 
 gen wantIUDimp = q4dr
 label values wantIUDimp yesnomissing
+label variable wantIUDimp "Q4: R is interested in IUD/implant"
 
 gen wantEC = q4er
+label variable wantEC "Q4: R is interested in emergency contraception"
 
 gen wantothermethod = .
 replace wantothermethod = 1 if (q4fr == 1 | q4g1r == 1 | q4g2r == 1)
 replace wantothermethod = 2 if (q4fr == 2)
 replace wantothermethod = .a if q4missing == 1
 label values wantothermethod yesnomissing
+label variable wantothermethod "Q4: R is interested in another method today"
 
 gen wantnone = q4hr
+label values wantnone yesnomissing
+label variable wantnone "Q4: R is not interested in a method today"
